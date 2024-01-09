@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/instance: proxy-role
     app.kubernetes.io/component: kube-rbac-proxy
-    app.kubernetes.io/created-by: pfsense-controller
-    app.kubernetes.io/part-of: pfsense-controller
+    app.kubernetes.io/created-by: pfsense-dns-controller
+    app.kubernetes.io/part-of: pfsense-dns-controller
     app.kubernetes.io/managed-by: kustomize
   name: proxy-role
 rules:

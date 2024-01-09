@@ -5,9 +5,6 @@
 domain: rcluff.com
 layout:
 - go.kubebuilder.io/v4
-plugins:
-  manifests.sdk.operatorframework.io/v2: {}
-  scorecard.sdk.operatorframework.io/v2: {}
-projectName: pfsense-controller
-repo: github.com/ryancluff/pfsense-controller
+projectName: pfsense-dns-controller
+repo: github.com/ryancluff/pfsense-dns-controller
 version: "3"
