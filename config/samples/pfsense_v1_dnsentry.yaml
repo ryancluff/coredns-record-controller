@@ -1,0 +1,14 @@
+apiVersion: pfsense.rcluff.com/v1
+kind: DnsEntry
+metadata:
+  labels:
+    app.kubernetes.io/name: dnsentry
+    app.kubernetes.io/instance: dnsentry-jellyfin
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: pfsense-dns-controller
+  name: jellyfin
+spec:
+  host: jellyfin
+  domain: app.rcluff.com
+  ip: 192.168.100.250

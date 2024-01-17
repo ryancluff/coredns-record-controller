@@ -1,0 +1,27 @@
+# permissions for end users to view dnsentries.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: dnsentry-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: pfsense-dns-controller
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: dnsentry-viewer-role
+rules:
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - dnsentries
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - dnsentries/status
+  verbs:
+  - get

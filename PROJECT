@@ -7,4 +7,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: pfsense-dns-controller
 repo: github.com/ryancluff/pfsense-dns-controller
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: DnsEntry
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
 version: "3"

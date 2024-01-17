@@ -18,7 +18,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
+	"strings"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -31,6 +33,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
+
+	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
+	controller "github.com/ryancluff/pfsense-dns-controller/internal/controller"
+	pfsense "github.com/ryancluff/pfsense-dns-controller/internal/pfsense_client"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -42,6 +48,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
+	utilruntime.Must(pfsensev1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -61,6 +68,25 @@ func main() {
 	flag.Parse()
 
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
+
+	missing := []string{}
+	pfsenseHost, okHost := os.LookupEnv("PFSENSE_HOST")
+	pfsenseClientID, okUser := os.LookupEnv("PFSENSE_CLIENT_ID")
+	pfsenseClientToken, okPass := os.LookupEnv("PFSENSE_CLIENT_TOKEN")
+	if !okHost {
+		missing = append(missing, "PFSENSE_HOST")
+	}
+	if !okUser {
+		missing = append(missing, "PFSENSE_CLIENT_ID")
+	}
+	if !okPass {
+		missing = append(missing, "PFSENSE_CLIENT_TOKEN")
+	}
+	if len(missing) > 0 {
+		err := fmt.Errorf("missing required environment variables: %s", strings.Join(missing, ", "))
+		setupLog.Error(err, "missing required environment variables")
+		os.Exit(1)
+	}
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
@@ -85,6 +111,20 @@ func main() {
 		os.Exit(1)
 	}
 
+	pfc, err := pfsense.NewPfsenseClient(pfsenseHost, pfsenseClientID, pfsenseClientToken)
+	if err != nil {
+		setupLog.Error(err, "unable to create pfsense client")
+		os.Exit(1)
+	}
+
+	if err = (&controller.DnsEntryReconciler{
+		Client:        mgr.GetClient(),
+		Scheme:        mgr.GetScheme(),
+		PfsenseClient: pfc,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "DnsEntry")
+		os.Exit(1)
+	}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
