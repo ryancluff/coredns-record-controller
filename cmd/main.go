@@ -69,18 +69,22 @@ func main() {
 
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
+	envList := []string{
+		"PFSENSE_HOST",
+		"PFSENSE_CLIENT_ID",
+		"PFSENSE_CLIENT_TOKEN",
+		"NAMESPACE",
+		"CONTROLLER_NAME",
+	}
+
+	env := make(map[string]string)
 	missing := []string{}
-	pfsenseHost, okHost := os.LookupEnv("PFSENSE_HOST")
-	pfsenseClientID, okUser := os.LookupEnv("PFSENSE_CLIENT_ID")
-	pfsenseClientToken, okPass := os.LookupEnv("PFSENSE_CLIENT_TOKEN")
-	if !okHost {
-		missing = append(missing, "PFSENSE_HOST")
-	}
-	if !okUser {
-		missing = append(missing, "PFSENSE_CLIENT_ID")
-	}
-	if !okPass {
-		missing = append(missing, "PFSENSE_CLIENT_TOKEN")
+	for _, key := range envList {
+		var ok bool
+		env[key], ok = os.LookupEnv(key)
+		if !ok {
+			missing = append(missing, key)
+		}
 	}
 	if len(missing) > 0 {
 		err := fmt.Errorf("missing required environment variables: %s", strings.Join(missing, ", "))
@@ -111,16 +115,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	pfc, err := pfsense.NewPfsenseClient(pfsenseHost, pfsenseClientID, pfsenseClientToken)
+	pfc, err := pfsense.NewPfsenseClient(env["PFSENSE_HOST"], env["PFSENSE_CLIENT_ID"], env["PFSENSE_CLIENT_TOKEN"])
 	if err != nil {
 		setupLog.Error(err, "unable to create pfsense client")
 		os.Exit(1)
 	}
 
 	if err = (&controller.DnsEntryReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		PfsenseClient: pfc,
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		PfClient: pfc,
+		Name:     env["CONTROLLER_NAME"],
+		Log:      ctrl.Log.WithName("pfsenseClient"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "DnsEntry")
 		os.Exit(1)

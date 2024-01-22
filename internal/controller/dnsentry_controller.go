@@ -19,12 +19,15 @@ package controller
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"strings"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
+	"github.com/go-logr/logr"
 	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
 	pfsense_client "github.com/ryancluff/pfsense-dns-controller/internal/pfsense_client"
 )
@@ -32,8 +35,10 @@ import (
 // DnsEntryReconciler reconciles a DnsEntry object
 type DnsEntryReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
-	pfsense_client.PfsenseClient
+	Scheme   *runtime.Scheme
+	PfClient pfsense_client.PfsenseClient
+	Name     string
+	Log      logr.Logger
 }
 
 //+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=dnsentries,verbs=get;list;watch;create;update;patch;delete
@@ -52,63 +57,76 @@ type DnsEntryReconciler struct {
 func (r *DnsEntryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 
-	var dnsEntry pfsensev1.DnsEntry
-	if err := r.Get(ctx, req.NamespacedName, &dnsEntry); err != nil {
-		log.Error(err, "unable to fetch DnsEntry")
-		return ctrl.Result{}, client.IgnoreNotFound(err)
+	var dnsEntries pfsensev1.DnsEntryList
+	if err := r.List(ctx, &dnsEntries); err != nil {
+		log.Error(err, "unable to fetch DnsEntryList")
+		err = nil
 	}
 
-	response, err := r.PfsenseClient.Call("GET", "/api/v1/services/unbound/host_override", nil)
+	var dnsEntriesByName = make(map[string]pfsense_client.HostOverride)
+	for _, dnsEntry := range dnsEntries.Items {
+		tag := fmt.Sprintf("%s/%s/%s", r.Name, dnsEntry.Namespace, dnsEntry.Name)
+		hostOverride := pfsense_client.HostOverride{
+			Host:   dnsEntry.Spec.Host,
+			Domain: dnsEntry.Spec.Domain,
+			IP:     []string{dnsEntry.Spec.Ip},
+			Tag:    tag,
+		}
+		dnsEntriesByName[hostOverride.Name()] = hostOverride
+	}
+
+	hostOverridesByName, err := r.PfClient.GetHostOverrides()
 	if err != nil {
 		log.Error(err, "unable to get host overrides")
 		return ctrl.Result{}, err
 	}
-	if response["status"] != "ok" {
-		err = fmt.Errorf("response status: %.0f %s", response["code"].(float64), response["status"].(string))
-		log.Error(err, "unable to get host overrides")
-		return ctrl.Result{}, err
+
+	newHostOverridesByName := make(map[string]pfsense_client.HostOverride)
+	for name, hostOverride := range hostOverridesByName {
+		if !strings.HasPrefix(hostOverride.Tag, r.Name) {
+			newHostOverridesByName[name] = hostOverride
+		}
+	}
+	for name, hostOverride := range dnsEntriesByName {
+		newHostOverridesByName[name] = hostOverride
 	}
 
-	var id int = -1
-	for i, value := range response["data"].([]interface{}) {
-		host := value.(map[string]interface{})["host"].(string)
-		domain := value.(map[string]interface{})["domain"].(string)
+	diff := struct {
+		Created []pfsense_client.HostOverride
+		Updated []pfsense_client.HostOverride
+		Deleted []pfsense_client.HostOverride
+	}{
+		Created: []pfsense_client.HostOverride{},
+		Updated: []pfsense_client.HostOverride{},
+		Deleted: []pfsense_client.HostOverride{},
+	}
 
-		if host == dnsEntry.Spec.Host && domain == dnsEntry.Spec.Domain {
-			id = i
+	unchanged := []pfsense_client.HostOverride{}
+	for name, hostOverride := range newHostOverridesByName {
+		if _, ok := hostOverridesByName[name]; !ok {
+			diff.Created = append(diff.Created, hostOverride)
+		} else if !reflect.DeepEqual(hostOverride, hostOverridesByName[name]) {
+			diff.Updated = append(diff.Updated, hostOverride)
+		} else {
+			unchanged = append(unchanged, hostOverride)
+		}
+	}
+	for name, hostOverride := range hostOverridesByName {
+		if _, ok := newHostOverridesByName[name]; !ok {
+			diff.Deleted = append(diff.Deleted, hostOverride)
 		}
 	}
 
-	hostOverride := map[string]interface{}{
-		"host":   dnsEntry.Spec.Host,
-		"domain": dnsEntry.Spec.Domain,
-		"ip":     []string{dnsEntry.Spec.Ip},
-		"descr":  "managed by pfsense-dns-controller/" + dnsEntry.Name,
-	}
-
-	var method string
-	if id != -1 {
-		ip_current := response["data"].([]interface{})[id].(map[string]interface{})["ip"].(string)
-		if ip_current == dnsEntry.Spec.Ip {
-			return ctrl.Result{}, nil
+	if len(diff.Created)+len(diff.Updated)+len(diff.Deleted) == 1 {
+		r.Log.Info("Host Override change required", "diff", diff)
+		r.Log.V(1).Info("Host Override change required", "unchanged", unchanged)
+		if err = r.PfClient.SetHostOverrides(newHostOverridesByName); err != nil {
+			log.Error(err, "unable to flush host overrides")
+			return ctrl.Result{}, err
 		}
-
-		hostOverride["id"] = id
-		method = "PUT"
+		log.V(1).Info("Host Override change complete")
 	} else {
-		method = "POST"
-	}
-
-	response, err = r.PfsenseClient.Call(method, "/api/v1/services/unbound/host_override", hostOverride)
-
-	if err != nil {
-		log.Error(err, "unable to apply host overrides")
-		return ctrl.Result{}, err
-	}
-	if response["status"] != "ok" {
-		err = fmt.Errorf("response status: %.0f %s", response["code"].(float64), response["status"].(string))
-		log.Error(err, "unable to apply host overrides")
-		return ctrl.Result{}, err
+		log.V(1).Info("Host Override change not required")
 	}
 
 	return ctrl.Result{}, nil
