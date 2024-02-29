@@ -21,18 +21,27 @@ import (
 )
 
 // spec
-type DnsEntrySpec struct {
+type DnsRecordSpec struct {
 	// The host part of the DNS entry.
 	Host string `json:"host"`
 
 	// The domain part of the DNS entry.
 	Domain string `json:"domain"`
 
-	// The IP address of the DNS entry.
-	Ip string `json:"ip,omitempty"`
-
 	// The list of aliases for the DNS entry.
 	Aliases []Alias `json:"aliases,omitempty"`
+
+	// The IP address of the DNS entry.
+	IPs []string `json:"ips,omitempty"`
+
+	// The name of the load balancer to use for dynamic DNS.
+	Service string `json:"service,omitempty"`
+
+	// // The name of the kubernetes ingress to use for dynamic DNS.
+	// Ingress string `json:"ingress,omitempty"`
+
+	// // The name of the Traefik ingressRoute to use for dynamic DNS.
+	// IngressRoute string `json:"ingressRoute,omitempty"`
 }
 
 // spec.alias
@@ -45,13 +54,16 @@ type Alias struct {
 }
 
 // status
-type DnsEntryStatus struct {
-	// Specifies the state of the DnsEntry.
+type DnsRecordStatus struct {
+	// Specifies the state of the DnsRecord.
 	// Valid values are:
 	// - "Pending" (default): the controller has not processed the request yet;
-	// - "Ready": the controller has created the DnsEntry;
-	// - "Error": the controller encountered an error reconciling the DnsEntry and will not retry.
+	// - "Ready": the controller has created the DnsRecord;
+	// - "Error": the controller encountered an error reconciling the DnsRecord and will not retry.
 	State State `json:"state,omitempty"`
+
+	// The current IP address of the DNS entry.
+	IPs []string `json:"ip,omitempty"`
 }
 
 // +kubebuilder:validation:Enum=Pending;Ready;Error
@@ -65,27 +77,27 @@ const (
 	ErrorState   State = "Error"
 )
 
-//+kubebuilder:object:root=true
-//+kubebuilder:subresource:status
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 
-// DnsEntry is the Schema for the dnsentries API
-type DnsEntry struct {
+// DnsRecord is the Schema for the dnsentries API
+type DnsRecord struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DnsEntrySpec   `json:"spec,omitempty"`
-	Status DnsEntryStatus `json:"status,omitempty"`
+	Spec   DnsRecordSpec   `json:"spec,omitempty"`
+	Status DnsRecordStatus `json:"status,omitempty"`
 }
 
-//+kubebuilder:object:root=true
+// +kubebuilder:object:root=true
 
-// DnsEntryList contains a list of DnsEntry
-type DnsEntryList struct {
+// DnsRecordList contains a list of DnsRecord
+type DnsRecordList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DnsEntry `json:"items"`
+	Items           []DnsRecord `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DnsEntry{}, &DnsEntryList{})
+	SchemeBuilder.Register(&DnsRecord{}, &DnsRecordList{})
 }

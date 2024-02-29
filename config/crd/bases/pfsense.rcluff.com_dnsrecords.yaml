@@ -8,16 +8,16 @@ metadata:
 spec:
   group: pfsense.rcluff.com
   names:
-    kind: DnsEntry
-    listKind: DnsEntryList
+    kind: DnsRecord
+    listKind: DnsRecordList
     plural: dnsentries
-    singular: dnsentry
+    singular: dnsrecord
   scope: Namespaced
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: DnsEntry is the Schema for the dnsentries API
+        description: DnsRecord is the Schema for the dnsentries API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -56,8 +56,13 @@ spec:
               host:
                 description: The host part of the DNS entry.
                 type: string
-              ip:
+              ips:
                 description: The IP address of the DNS entry.
+                items:
+                  type: string
+                type: array
+              service:
+                description: The name of the load balancer to use for dynamic DNS.
                 type: string
             required:
             - domain
@@ -66,14 +71,18 @@ spec:
           status:
             description: status
             properties:
+              ip:
+                description: The current IP address of the DNS entry.
+                items:
+                  type: string
+                type: array
               state:
-                description: 'Specifies the state of the DnsEntry. Valid values are:
-                  - "Pending" (default): the controller has not processed the request
-                  yet; - "Ready": the controller has created the DnsEntry; - "Error":
-                  the controller encountered an error reconciling the DnsEntry and
-                  will not retry.'
+                description: 'Specifies the state of the DnsRecord. Valid values are:
+                  - "" (default): the controller has not processed the request yet;
+                  - "Ready": the controller has created the DnsRecord; - "Error": the
+                  controller encountered an error reconciling the DnsRecord and will
+                  not retry.'
                 enum:
-                - Pending
                 - Ready
                 - Error
                 type: string

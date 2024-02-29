@@ -4,12 +4,12 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: dnsentry-editor-role
+    app.kubernetes.io/instance: dnsrecord-editor-role
     app.kubernetes.io/component: rbac
     app.kubernetes.io/created-by: pfsense-dns-controller
     app.kubernetes.io/part-of: pfsense-dns-controller
     app.kubernetes.io/managed-by: kustomize
-  name: dnsentry-editor-role
+  name: dnsrecord-editor-role
 rules:
 - apiGroups:
   - pfsense.rcluff.com

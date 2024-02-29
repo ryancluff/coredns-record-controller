@@ -72,14 +72,14 @@ func (pfc *PfsenseClient) Call(method string, path string, payload map[string]in
 }
 
 func (pfc *PfsenseClient) GetHostOverrides() (map[string]HostOverride, error) {
-	hostOverridesByFQDN := map[string]HostOverride{}
+	hostOverridesByName := map[string]HostOverride{}
 	response, err := pfc.Call("GET", "/api/v1/services/unbound/host_override", nil)
 	if err != nil {
-		return hostOverridesByFQDN, err
+		return hostOverridesByName, err
 	}
 	if response["status"] != "ok" {
 		err = fmt.Errorf("response status: %.0f %s", response["code"].(float64), response["status"].(string))
-		return hostOverridesByFQDN, err
+		return hostOverridesByName, err
 	}
 
 	for _, value := range response["data"].([]interface{}) {
@@ -87,15 +87,15 @@ func (pfc *PfsenseClient) GetHostOverrides() (map[string]HostOverride, error) {
 		hostOverride := HostOverride{
 			Host:   valueMap["host"].(string),
 			Domain: valueMap["domain"].(string),
-			IP:     []string{valueMap["ip"].(string)},
+			IPs:    []string{valueMap["ip"].(string)},
 			Tag:    valueMap["descr"].(string),
 		}
 
 		fqdn := fmt.Sprintf("%s.%s", hostOverride.Host, hostOverride.Domain)
-		hostOverridesByFQDN[fqdn] = hostOverride
+		hostOverridesByName[fqdn] = hostOverride
 	}
 
-	return hostOverridesByFQDN, nil
+	return hostOverridesByName, nil
 }
 
 func (pfc *PfsenseClient) SetHostOverrides(hostOverridesByFQDN map[string]HostOverride) error {
@@ -111,7 +111,49 @@ func (pfc *PfsenseClient) SetHostOverrides(hostOverridesByFQDN map[string]HostOv
 		"apply":          true,
 	}
 
-	response, err := pfc.Call("PUT", "/api/v1/services/unbound/host_override/flush", payload)
+	res, err := pfc.Call("PUT", "/api/v1/services/unbound/host_override/flush", payload)
+	if err != nil {
+		return err
+	}
+	if res["status"] != "ok" {
+		err = fmt.Errorf("response status: %.0f %s", res["code"].(float64), res["status"].(string))
+		return err
+	}
+
+	return nil
+}
+
+func (pfc *PfsenseClient) CreateHostOverride(hostOverride HostOverride) error {
+	payload := map[string]interface{}{
+		"host":   hostOverride.Host,
+		"domain": hostOverride.Domain,
+		"ip":     hostOverride.IPs,
+		"descr":  hostOverride.Tag,
+		"apply":  true,
+	}
+
+	response, err := pfc.Call("POST", "/api/v1/services/unbound/host_override", payload)
+	if err != nil {
+		return err
+	}
+	if response["status"] != "ok" {
+		err = fmt.Errorf("response status: %.0f %s", response["code"].(float64), response["status"].(string))
+		return err
+	}
+
+	return nil
+}
+
+func (pfc *PfsenseClient) DeleteHostOverride(hostOverride HostOverride) error {
+	payload := map[string]interface{}{
+		"host":   hostOverride.Host,
+		"domain": hostOverride.Domain,
+		"ip":     hostOverride.IPs,
+		"descr":  hostOverride.Tag,
+		"apply":  true,
+	}
+
+	response, err := pfc.Call("DELETE", "/api/v1/services/unbound/host_override", payload)
 	if err != nil {
 		return err
 	}

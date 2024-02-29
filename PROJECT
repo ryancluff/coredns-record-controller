@@ -14,7 +14,7 @@ resources:
   controller: true
   domain: rcluff.com
   group: pfsense
-  kind: DnsEntry
+  kind: DnsRecord
   path: github.com/ryancluff/pfsense-dns-controller/api/v1
   version: v1
 version: "3"

@@ -121,14 +121,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controller.DnsEntryReconciler{
+	if err = (&controller.DnsRecordReconciler{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		PfClient: pfc,
 		Name:     env["CONTROLLER_NAME"],
 		Log:      ctrl.Log.WithName("pfsenseClient"),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "DnsEntry")
+		setupLog.Error(err, "unable to create controller", "controller", "DnsRecord")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

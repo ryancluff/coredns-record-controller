@@ -5,7 +5,7 @@ import "fmt"
 type HostOverride struct {
 	Host   string   `json:"host"`
 	Domain string   `json:"domain"`
-	IP     []string `json:"ip"`
+	IPs    []string `json:"ip"`
 	Tag    string   `json:"descr"`
 }
 
