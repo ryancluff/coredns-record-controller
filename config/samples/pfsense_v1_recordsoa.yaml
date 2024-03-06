@@ -4,9 +4,9 @@ metadata:
   labels:
     app.kubernetes.io/name: recordsoa
     app.kubernetes.io/instance: recordsoa-sample
-    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/part-of: coredns-record-controller
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: pfsense-dns-controller
+    app.kubernetes.io/created-by: coredns-record-controller
   name: recordsoa-sample
 spec:
   # TODO(user): Add fields here

@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/instance: recordns-editor-role
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: pfsense-dns-controller
-    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/created-by: coredns-record-controller
+    app.kubernetes.io/part-of: coredns-record-controller
     app.kubernetes.io/managed-by: kustomize
   name: recordns-editor-role
 rules:

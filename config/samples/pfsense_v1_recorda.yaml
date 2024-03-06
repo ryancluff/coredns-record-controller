@@ -4,9 +4,9 @@ metadata:
   labels:
     app.kubernetes.io/name: recorda
     app.kubernetes.io/instance: recorda-sample
-    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/part-of: coredns-record-controller
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: pfsense-dns-controller
+    app.kubernetes.io/created-by: coredns-record-controller
   name: recorda-sample
 spec:
   # TODO(user): Add fields here

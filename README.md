@@ -1,4 +1,4 @@
-# pfsense-dns-controller
+# coredns-record-controller
 // TODO(user): Add simple overview of use/purpose
 
 ## Description
@@ -16,7 +16,7 @@
 **Build and push your image to the location specified by `IMG`:**
 
 ```sh
-make docker-build docker-push IMG=<some-registry>/pfsense-dns-controller:tag
+make docker-build docker-push IMG=<some-registry>/coredns-record-controller:tag
 ```
 
 **NOTE:** This image ought to be published in the personal registry you specified. 
@@ -32,7 +32,7 @@ make install
 **Deploy the Manager to the cluster with the image specified by `IMG`:**
 
 ```sh
-make deploy IMG=<some-registry>/pfsense-dns-controller:tag
+make deploy IMG=<some-registry>/coredns-record-controller:tag
 ```
 
 > **NOTE**: If you encounter RBAC errors, you may need to grant yourself cluster-admin 
