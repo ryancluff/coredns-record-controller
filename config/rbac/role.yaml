@@ -212,3 +212,29 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - coredns.rcluff.com
+  resources:
+  - zones
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - coredns.rcluff.com
+  resources:
+  - zones/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - coredns.rcluff.com
+  resources:
+  - zones/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,12 @@
+apiVersion: coredns.rcluff.com/v1
+kind: RecordNS
+metadata:
+  labels:
+    app.kubernetes.io/name: recordns
+    app.kubernetes.io/instance: recordns-sample
+    app.kubernetes.io/part-of: output-dir
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: output-dir
+  name: recordns-sample
+spec:
+  # TODO(user): Add fields here

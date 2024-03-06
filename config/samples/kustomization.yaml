@@ -1,0 +1,12 @@
+## Append samples of your project ##
+resources:
+- coredns_v1_recorda.yaml
+- coredns_v1_recordaaaa.yaml
+- coredns_v1_recordcname.yaml
+- coredns_v1_recordtxt.yaml
+- coredns_v1_recordns.yaml
+- coredns_v1_recordmx.yaml
+- coredns_v1_recordsrv.yaml
+- coredns_v1_recordsoa.yaml
+- coredns_v1_zone.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

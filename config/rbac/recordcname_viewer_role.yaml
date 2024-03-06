@@ -1,0 +1,27 @@
+# permissions for end users to view recordcnames.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: recordcname-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: output-dir
+    app.kubernetes.io/part-of: output-dir
+    app.kubernetes.io/managed-by: kustomize
+  name: recordcname-viewer-role
+rules:
+- apiGroups:
+  - coredns.rcluff.com
+  resources:
+  - recordcnames
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - coredns.rcluff.com
+  resources:
+  - recordcnames/status
+  verbs:
+  - get
