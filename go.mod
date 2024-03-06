@@ -1,4 +1,4 @@
-module github.com/ryancluff/pfsense-dns-controller
+module github.com/ryancluff/coredns-record-controller
 
 go 1.20
 

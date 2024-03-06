@@ -25,7 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	redis "github.com/redis/go-redis/v9"
-	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
+	corednsv1 "github.com/ryancluff/coredns-record-controller/api/v1"
 )
 
 // RecordSRVReconciler reconciles a RecordSRV object
@@ -43,9 +43,9 @@ type SRV struct {
 	TTL      int    `json:"ttl,omitempty"`
 }
 
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordsrvs,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordsrvs/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordsrvs/finalizers,verbs=update
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordsrvs,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordsrvs/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordsrvs/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -67,6 +67,6 @@ func (r *RecordSRVReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 // SetupWithManager sets up the controller with the Manager.
 func (r *RecordSRVReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&pfsensev1.RecordSRV{}).
+		For(&corednsv1.RecordSRV{}).
 		Complete(r)
 }

@@ -25,7 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	redis "github.com/redis/go-redis/v9"
-	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
+	corednsv1 "github.com/ryancluff/coredns-record-controller/api/v1"
 )
 
 // RecordAAAAReconciler reconciles a RecordAAAA object
@@ -40,9 +40,9 @@ type AAAA struct {
 	TTL int    `json:"ttl,omitempty"`
 }
 
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordaaaas,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordaaaas/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recordaaaas/finalizers,verbs=update
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordaaaas,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordaaaas/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recordaaaas/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -64,6 +64,6 @@ func (r *RecordAAAAReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 // SetupWithManager sets up the controller with the Manager.
 func (r *RecordAAAAReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&pfsensev1.RecordAAAA{}).
+		For(&corednsv1.RecordAAAA{}).
 		Complete(r)
 }

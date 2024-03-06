@@ -25,7 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	redis "github.com/redis/go-redis/v9"
-	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
+	corednsv1 "github.com/ryancluff/coredns-record-controller/api/v1"
 )
 
 // RecordAReconciler reconciles a RecordA object
@@ -40,9 +40,9 @@ type A struct {
 	TTL int    `json:"ttl,omitempty"`
 }
 
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recorda,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recorda/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=pfsense.rcluff.com,resources=recorda/finalizers,verbs=update
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recorda,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recorda/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=coredns.rcluff.com,resources=recorda/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -56,7 +56,11 @@ type A struct {
 func (r *RecordAReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var record corednsv1.RecordA
+	if err := r.Get(ctx, req.NamespacedName, &record); err != nil {
+		log.Log.Error(err, "unable to fetch RecordA")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 
 	return ctrl.Result{}, nil
 }
@@ -64,6 +68,6 @@ func (r *RecordAReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 // SetupWithManager sets up the controller with the Manager.
 func (r *RecordAReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&pfsensev1.RecordA{}).
+		For(&corednsv1.RecordA{}).
 		Complete(r)
 }

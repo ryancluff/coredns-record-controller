@@ -5,88 +5,88 @@
 domain: rcluff.com
 layout:
 - go.kubebuilder.io/v4
-projectName: pfsense-dns-controller
-repo: github.com/ryancluff/pfsense-dns-controller
+projectName: coredns-record-controller
+repo: github.com/ryancluff/coredns-record-controller
 resources:
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: DnsRecord
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordA
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordAAAA
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordCNAME
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordTXT
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordNS
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordMX
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordSRV
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
     namespaced: true
   controller: true
   domain: rcluff.com
-  group: pfsense
+  group: coredns
   kind: RecordSOA
-  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
 version: "3"

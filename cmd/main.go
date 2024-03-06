@@ -36,8 +36,8 @@ import (
 
 	redis "github.com/redis/go-redis/v9"
 
-	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
-	"github.com/ryancluff/pfsense-dns-controller/internal/controller"
+	corednsv1 "github.com/ryancluff/coredns-record-controller/api/v1"
+	"github.com/ryancluff/coredns-record-controller/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -49,7 +49,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(pfsensev1.AddToScheme(scheme))
+	utilruntime.Must(corednsv1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 

@@ -4,20 +4,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: recordsrvs.pfsense.rcluff.com
+  name: recordas.coredns.rcluff.com
 spec:
-  group: pfsense.rcluff.com
+  group: coredns.rcluff.com
   names:
-    kind: RecordSRV
-    listKind: RecordSRVList
-    plural: recordsrvs
-    singular: recordsrv
+    kind: RecordA
+    listKind: RecordAList
+    plural: recordas
+    singular: recorda
   scope: Namespaced
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: RecordSRV is the Schema for the recordsrvs API
+        description: RecordA is the Schema for the recorda API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -32,17 +32,13 @@ spec:
           metadata:
             type: object
           spec:
-            description: RecordSRVSpec defines the desired state of RecordSRV
+            description: RecordASpec defines the desired state of RecordA
             properties:
-              host:
+              ip4:
                 type: string
-              port:
-                type: integer
-              priority:
-                type: integer
+              service:
+                type: string
               ttl:
-                type: integer
-              weight:
                 type: integer
               zone:
                 type: string
@@ -50,8 +46,10 @@ spec:
             - zone
             type: object
           status:
-            description: RecordSRVStatus defines the observed state of RecordSRV
+            description: RecordAStatus defines the observed state of RecordA
             properties:
+              ip:
+                type: string
               state:
                 description: status.state
                 enum:

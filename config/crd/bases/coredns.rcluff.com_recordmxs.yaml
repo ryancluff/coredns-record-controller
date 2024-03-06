@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: recordmxs.pfsense.rcluff.com
+  name: recordmxs.coredns.rcluff.com
 spec:
-  group: pfsense.rcluff.com
+  group: coredns.rcluff.com
   names:
     kind: RecordMX
     listKind: RecordMXList

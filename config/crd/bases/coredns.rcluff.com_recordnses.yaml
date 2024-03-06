@@ -4,20 +4,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: recordtxts.pfsense.rcluff.com
+  name: recordnses.coredns.rcluff.com
 spec:
-  group: pfsense.rcluff.com
+  group: coredns.rcluff.com
   names:
-    kind: RecordTXT
-    listKind: RecordTXTList
-    plural: recordtxts
-    singular: recordtxt
+    kind: RecordNS
+    listKind: RecordNSList
+    plural: recordnses
+    singular: recordns
   scope: Namespaced
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: RecordTXT is the Schema for the recordtxts API
+        description: RecordNS is the Schema for the recordns API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -32,9 +32,9 @@ spec:
           metadata:
             type: object
           spec:
-            description: RecordTXTSpec defines the desired state of RecordTXT
+            description: RecordNSSpec defines the desired state of RecordNS
             properties:
-              text:
+              host:
                 type: string
               ttl:
                 type: integer
@@ -44,7 +44,7 @@ spec:
             - zone
             type: object
           status:
-            description: RecordTXTStatus defines the observed state of RecordTXT
+            description: RecordNSStatus defines the observed state of RecordNS
             properties:
               state:
                 description: status.state

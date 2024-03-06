@@ -5,7 +5,7 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recorda
   verbs:
@@ -17,13 +17,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recorda/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recorda/status
   verbs:
@@ -31,7 +31,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordaaaas
   verbs:
@@ -43,13 +43,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordaaaas/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordaaaas/status
   verbs:
@@ -57,7 +57,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordcnames
   verbs:
@@ -69,13 +69,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordcnames/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordcnames/status
   verbs:
@@ -83,7 +83,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordmxes
   verbs:
@@ -95,13 +95,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordmxes/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordmxes/status
   verbs:
@@ -109,7 +109,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordns
   verbs:
@@ -121,13 +121,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordns/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordns/status
   verbs:
@@ -135,7 +135,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsoa
   verbs:
@@ -147,13 +147,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsoa/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsoa/status
   verbs:
@@ -161,7 +161,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsrvs
   verbs:
@@ -173,13 +173,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsrvs/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordsrvs/status
   verbs:
@@ -187,7 +187,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordtxts
   verbs:
@@ -199,13 +199,13 @@ rules:
   - update
   - watch
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordtxts/finalizers
   verbs:
   - update
 - apiGroups:
-  - pfsense.rcluff.com
+  - coredns.rcluff.com
   resources:
   - recordtxts/status
   verbs:
