@@ -1,0 +1,12 @@
+apiVersion: pfsense.rcluff.com/v1
+kind: RecordSOA
+metadata:
+  labels:
+    app.kubernetes.io/name: recordsoa
+    app.kubernetes.io/instance: recordsoa-sample
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: pfsense-dns-controller
+  name: recordsoa-sample
+spec:
+  # TODO(user): Add fields here

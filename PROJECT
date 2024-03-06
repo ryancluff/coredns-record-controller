@@ -17,4 +17,76 @@ resources:
   kind: DnsRecord
   path: github.com/ryancluff/pfsense-dns-controller/api/v1
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordA
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordAAAA
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordCNAME
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordTXT
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordNS
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordMX
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordSRV
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: rcluff.com
+  group: pfsense
+  kind: RecordSOA
+  path: github.com/ryancluff/pfsense-dns-controller/api/v1
+  version: v1
 version: "3"

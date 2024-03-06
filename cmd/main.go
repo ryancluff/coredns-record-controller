@@ -34,9 +34,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
+	redis "github.com/redis/go-redis/v9"
+
 	pfsensev1 "github.com/ryancluff/pfsense-dns-controller/api/v1"
-	controller "github.com/ryancluff/pfsense-dns-controller/internal/controller"
-	pfsense "github.com/ryancluff/pfsense-dns-controller/internal/pfsense_client"
+	"github.com/ryancluff/pfsense-dns-controller/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -70,12 +71,10 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	envList := []string{
-		"PFSENSE_HOST",
-		"PFSENSE_CLIENT_ID",
-		"PFSENSE_CLIENT_TOKEN",
-		"NAMESPACE",
-		"CONTROLLER_NAME",
-	}
+		// "REDIS_HOST",
+		// "REDIS_PORT",
+		// "REDIS_PASSWORD",
+		"NAMESPACE"}
 
 	env := make(map[string]string)
 	missing := []string{}
@@ -115,20 +114,74 @@ func main() {
 		os.Exit(1)
 	}
 
-	pfc, err := pfsense.NewPfsenseClient(env["PFSENSE_HOST"], env["PFSENSE_CLIENT_ID"], env["PFSENSE_CLIENT_TOKEN"])
-	if err != nil {
-		setupLog.Error(err, "unable to create pfsense client")
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "password1", // no password set
+		DB:       0,           // use default DB
+	})
+
+	if err = (&controller.RecordAReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordA")
 		os.Exit(1)
 	}
-
-	if err = (&controller.DnsRecordReconciler{
-		Client:   mgr.GetClient(),
-		Scheme:   mgr.GetScheme(),
-		PfClient: pfc,
-		Name:     env["CONTROLLER_NAME"],
-		Log:      ctrl.Log.WithName("pfsenseClient"),
+	if err = (&controller.RecordAAAAReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "DnsRecord")
+		setupLog.Error(err, "unable to create controller", "controller", "RecordAAAA")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordCNAMEReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordCNAME")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordTXTReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordTXT")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordNSReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordNS")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordMXReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordMX")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordSRVReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordSRV")
+		os.Exit(1)
+	}
+	if err = (&controller.RecordSOAReconciler{
+		Client:      mgr.GetClient(),
+		Scheme:      mgr.GetScheme(),
+		RedisClient: client,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "RecordSOA")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

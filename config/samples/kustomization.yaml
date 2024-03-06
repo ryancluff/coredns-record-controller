@@ -1,4 +1,11 @@
 ## Append samples of your project ##
 resources:
-- pfsense_v1_dnsentry.yaml
+- pfsense_v1_recorda.yaml
+- pfsense_v1_recordaaaa.yaml
+- pfsense_v1_recordcname.yaml
+- pfsense_v1_recordtxt.yaml
+- pfsense_v1_recordns.yaml
+- pfsense_v1_recordmx.yaml
+- pfsense_v1_recordsrv.yaml
+- pfsense_v1_recordsoa.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

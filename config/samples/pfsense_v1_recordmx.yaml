@@ -1,0 +1,12 @@
+apiVersion: pfsense.rcluff.com/v1
+kind: RecordMX
+metadata:
+  labels:
+    app.kubernetes.io/name: recordmx
+    app.kubernetes.io/instance: recordmx-sample
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: pfsense-dns-controller
+  name: recordmx-sample
+spec:
+  # TODO(user): Add fields here

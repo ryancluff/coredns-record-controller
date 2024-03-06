@@ -3,17 +3,41 @@
 # It should be run by config/default
 resources:
 - bases/pfsense.rcluff.com_dnsentries.yaml
+- bases/pfsense.rcluff.com_recorda.yaml
+- bases/pfsense.rcluff.com_recordaaaas.yaml
+- bases/pfsense.rcluff.com_recordcnames.yaml
+- bases/pfsense.rcluff.com_recordtxts.yaml
+- bases/pfsense.rcluff.com_recordns.yaml
+- bases/pfsense.rcluff.com_recordmxes.yaml
+- bases/pfsense.rcluff.com_recordsrvs.yaml
+- bases/pfsense.rcluff.com_recordsoa.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 patches:
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
 # patches here are for enabling the conversion webhook for each CRD
 #- path: patches/webhook_in_dnsentries.yaml
+#- path: patches/webhook_in_recorda.yaml
+#- path: patches/webhook_in_recordaaaas.yaml
+#- path: patches/webhook_in_recordcnames.yaml
+#- path: patches/webhook_in_recordtxts.yaml
+#- path: patches/webhook_in_recordns.yaml
+#- path: patches/webhook_in_recordmxes.yaml
+#- path: patches/webhook_in_recordsrvs.yaml
+#- path: patches/webhook_in_recordsoa.yaml
 #+kubebuilder:scaffold:crdkustomizewebhookpatch
 
 # [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
 # patches here are for enabling the CA injection for each CRD
 #- path: patches/cainjection_in_dnsentries.yaml
+#- path: patches/cainjection_in_recorda.yaml
+#- path: patches/cainjection_in_recordaaaas.yaml
+#- path: patches/cainjection_in_recordcnames.yaml
+#- path: patches/cainjection_in_recordtxts.yaml
+#- path: patches/cainjection_in_recordns.yaml
+#- path: patches/cainjection_in_recordmxes.yaml
+#- path: patches/cainjection_in_recordsrvs.yaml
+#- path: patches/cainjection_in_recordsoa.yaml
 #+kubebuilder:scaffold:crdkustomizecainjectionpatch
 
 # [WEBHOOK] To enable webhook, uncomment the following section

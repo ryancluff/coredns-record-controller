@@ -1,0 +1,12 @@
+apiVersion: pfsense.rcluff.com/v1
+kind: RecordTXT
+metadata:
+  labels:
+    app.kubernetes.io/name: recordtxt
+    app.kubernetes.io/instance: recordtxt-sample
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: pfsense-dns-controller
+  name: recordtxt-sample
+spec:
+  # TODO(user): Add fields here

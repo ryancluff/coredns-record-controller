@@ -1,0 +1,31 @@
+# permissions for end users to edit recordns.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: recordns-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: pfsense-dns-controller
+    app.kubernetes.io/part-of: pfsense-dns-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: recordns-editor-role
+rules:
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordns
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordns/status
+  verbs:
+  - get

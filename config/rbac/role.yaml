@@ -5,17 +5,9 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - ""
-  resources:
-  - services
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - pfsense.rcluff.com
   resources:
-  - dnsentries
+  - recorda
   verbs:
   - create
   - delete
@@ -27,13 +19,195 @@ rules:
 - apiGroups:
   - pfsense.rcluff.com
   resources:
-  - dnsentries/finalizers
+  - recorda/finalizers
   verbs:
   - update
 - apiGroups:
   - pfsense.rcluff.com
   resources:
-  - dnsentries/status
+  - recorda/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordaaaas
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordaaaas/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordaaaas/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordcnames
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordcnames/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordcnames/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordmxes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordmxes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordmxes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordns
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordns/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordns/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsoa
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsoa/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsoa/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsrvs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsrvs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordsrvs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordtxts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordtxts/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - pfsense.rcluff.com
+  resources:
+  - recordtxts/status
   verbs:
   - get
   - patch
