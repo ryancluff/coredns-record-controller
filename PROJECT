@@ -14,15 +14,6 @@ resources:
   controller: true
   domain: rcluff.com
   group: coredns
-  kind: DnsRecord
-  path: github.com/ryancluff/coredns-record-controller/api/v1
-  version: v1
-- api:
-    crdVersion: v1
-    namespaced: true
-  controller: true
-  domain: rcluff.com
-  group: coredns
   kind: RecordA
   path: github.com/ryancluff/coredns-record-controller/api/v1
   version: v1
