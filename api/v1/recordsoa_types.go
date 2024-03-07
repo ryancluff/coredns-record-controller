@@ -22,7 +22,7 @@ import (
 
 // RecordSOASpec defines the desired state of RecordSOA
 type RecordSOASpec struct {
-	Zone    string `json:"zone"`
+	Zone    string `json:"zone,omitempty"`
 	TTL     int    `json:"ttl,omitempty"`
 	MBOX    string `json:"mbox,omitempty"`
 	NS      string `json:"ns,omitempty"`
