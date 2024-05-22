@@ -22,7 +22,9 @@ import (
 
 // RecordAAAASpec defines the desired state of RecordAAAA
 type RecordAAAASpec struct {
-	Zone    string `json:"zone,omitempty"`
+	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	IP6     string `json:"ip6,omitempty"`
 	Service string `json:"service,omitempty"`
 	TTL     int    `json:"ttl,omitempty"`

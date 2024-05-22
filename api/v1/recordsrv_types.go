@@ -23,6 +23,8 @@ import (
 // RecordSRVSpec defines the desired state of RecordSRV
 type RecordSRVSpec struct {
 	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	Host     string `json:"host,omitempty"`
 	Port     int    `json:"port,omitempty"`
 	Priority int    `json:"priority,omitempty"`

@@ -22,7 +22,9 @@ import (
 
 // RecordCNAMESpec defines the desired state of RecordCNAME
 type RecordCNAMESpec struct {
-	Zone string `json:"zone,omitempty"`
+	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	Host string `json:"host"`
 	TTL  int    `json:"ttl,omitempty"`
 }

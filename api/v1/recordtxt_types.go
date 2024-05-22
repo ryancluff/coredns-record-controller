@@ -22,7 +22,9 @@ import (
 
 // RecordTXTSpec defines the desired state of RecordTXT
 type RecordTXTSpec struct {
-	Zone string `json:"zone,omitempty"`
+	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	Text string `json:"text,omitempty"`
 	TTL  int    `json:"ttl,omitempty"`
 }

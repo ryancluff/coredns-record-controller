@@ -22,7 +22,9 @@ import (
 
 // RecordNSSpec defines the desired state of RecordNS
 type RecordNSSpec struct {
-	Zone string `json:"zone,omitempty"`
+	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	Host string `json:"host,omitempty"`
 	TTL  int    `json:"ttl,omitempty"`
 }

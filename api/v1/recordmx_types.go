@@ -23,6 +23,8 @@ import (
 // RecordMXSpec defines the desired state of RecordMX
 type RecordMXSpec struct {
 	Zone     string `json:"zone,omitempty"`
+	Hostname string `json:"hostname,omitempty"`
+
 	Host     string `json:"host,omitempty"`
 	Priority int    `json:"priority,omitempty"`
 	TTL      int    `json:"ttl,omitempty"`
