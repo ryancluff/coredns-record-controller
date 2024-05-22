@@ -18,9 +18,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
-	"strings"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -70,25 +68,19 @@ func main() {
 
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
-	envList := []string{
-		// "REDIS_HOST",
-		// "REDIS_PORT",
-		// "REDIS_PASSWORD",
-		"NAMESPACE"}
-
-	env := make(map[string]string)
-	missing := []string{}
-	for _, key := range envList {
-		var ok bool
-		env[key], ok = os.LookupEnv(key)
-		if !ok {
-			missing = append(missing, key)
-		}
+	conf := map[string]string{
+		"NAMESPACE":      "default",
+		"DEFAULT_ZONE":   "example.com",
+		"REDIS_HOST":     "localhost",
+		"REDIS_PORT":     "6379",
+		"REDIS_PASSWORD": "password1",
 	}
-	if len(missing) > 0 {
-		err := fmt.Errorf("missing required environment variables: %s", strings.Join(missing, ", "))
-		setupLog.Error(err, "missing required environment variables")
-		os.Exit(1)
+
+	for key, _ := range conf {
+		value, ok := os.LookupEnv(key)
+		if ok {
+			conf[key] = value
+		}
 	}
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
@@ -115,9 +107,9 @@ func main() {
 	}
 
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "password1", // no password set
-		DB:       0,           // use default DB
+		Addr:     conf["REDIS_HOST"] + ":" + conf["REDIS_PORT"],
+		Password: conf["REDIS_PASSWORD"],
+		DB:       0,
 	})
 
 	if err = (&controller.RecordAReconciler{
