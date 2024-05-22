@@ -1,0 +1,24 @@
+services:
+  coredns-external:
+    image: registry.it.rcluff.com/coredns:0.1
+    container_name: coredns-external
+    ports:
+      - "8853:8853"
+    volumes:
+      - ./coredns/Corefile:/Corefile:ro
+    command:
+      - -p
+      - "8853"
+      - -conf
+      - /Corefile
+    restart: unless-stopped
+  redis:
+    image: redis:7.2.4-alpine3.19
+    container_name: coredns-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command:
+      - "redis-server"
+    restart: unless-stopped
