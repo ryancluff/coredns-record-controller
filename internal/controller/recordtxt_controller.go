@@ -33,6 +33,7 @@ type RecordTXTReconciler struct {
 	client.Client
 	Scheme      *runtime.Scheme
 	RedisClient *redis.Client
+	Config      map[string]string
 }
 
 type TXT struct {

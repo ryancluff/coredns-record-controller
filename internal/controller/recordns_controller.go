@@ -33,6 +33,7 @@ type RecordNSReconciler struct {
 	client.Client
 	Scheme      *runtime.Scheme
 	RedisClient *redis.Client
+	Config      map[string]string
 }
 
 type NS struct {

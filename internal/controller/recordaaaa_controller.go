@@ -33,6 +33,7 @@ type RecordAAAAReconciler struct {
 	client.Client
 	Scheme      *runtime.Scheme
 	RedisClient *redis.Client
+	Config      map[string]string
 }
 
 type AAAA struct {

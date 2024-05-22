@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -33,6 +34,7 @@ type RecordAReconciler struct {
 	client.Client
 	Scheme      *runtime.Scheme
 	RedisClient *redis.Client
+	Config      map[string]string
 }
 
 type A struct {
@@ -54,12 +56,47 @@ type A struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
 func (r *RecordAReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
 
 	var record corednsv1.RecordA
 	if err := r.Get(ctx, req.NamespacedName, &record); err != nil {
-		log.Log.Error(err, "unable to fetch RecordA")
+		log.Error(err, "unable to fetch RecordA")
 		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	a := A{
+		IP4: record.Spec.IP4,
+		TTL: record.Spec.TTL,
+	}
+
+	var zone string
+	if record.Spec.Zone != "" {
+		zone = record.Spec.Zone
+	} else {
+		zone = r.Config["DEFAULT_ZONE"]
+	}
+
+	var desiredZoneFile map[string][]map[string]string
+	currentZoneFile, err := r.RedisClient.HGet(ctx, zone, record.Spec.Hostname).Result()
+	if err == redis.Nil {
+		desiredZoneFile = initializeZoneFile()
+		desiredZoneFile["A"] = append(desiredZoneFile["A"], a)
+	} else if err != nil {
+		log.Error(err, "unable to get zone contents")
+		return ctrl.Result{}, err
+	}
+
+	if existingRecordsStr, ok := zoneFile[record.Spec.Hostname]; ok {
+		if redisErr := r.RedisClient.HSet(ctx, zone, record.Spec.Service, record.Spec.IP4).Err(); err != nil {
+			log.Error(redisErr, "unable to set zone contents")
+			return ctrl.Result{}, redisErr
+		}
+
+		var existingRecords A
+		if err := json.Unmarshal([]byte(existingRecordsStr), &a); err != nil {
+			log.Error(err, "unable to unmarshal existing records")
+			return ctrl.Result{}, err
+		}
 	}
 
 	return ctrl.Result{}, nil
