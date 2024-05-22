@@ -1,0 +1,10 @@
+$ORIGIN it.rcluff.com.
+@ 3600 IN SOA it.rcluff.com. ryan.rcluff.com. (
+	2017042745 ; serial
+	7200       ; refresh (2 hours)
+	3600       ; retry (1 hour)
+	3600	   ; expire (1 hour)
+	3600       ; minimum (1 hour)
+	)
+
+jellyfin IN A 192.168.100.250
